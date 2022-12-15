@@ -227,6 +227,13 @@ function Decode(fPort, data, variables) {
     var timeStamp = getUint32(data);
     obj = parsePayload(data);
     obj.timeStamp = timeStamp;
+
+ 
+    //add a human readable timestamp to the payload
+    var meterDate = new Date(timeStamp * 1000);
+    var  options = { timeZone:'Europe/Berlin', weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour:'numeric', minute:'numeric', second:'numeric'};
+    obj.timeStampReadable = meterDate.toLocaleString('de-CH',options);
+
     
     obj.medium = {
         "type": 1,
@@ -620,11 +627,10 @@ function parsePayload(data){
             dataType.value = Number(getInt64([data[i++], data[i++], data[i++], data[i++], data[i++], data[i++], data[i++], data[i++]]));
             break;
             case 'MeterSerial':
-            dataType.value = ('0' + Number(getUint8([data[i++]])).toString(16)).substr(0,2);
-            dataType.value = ('0' + Number(getUint8([data[i++]])).toString(16)).substr(0,2) + dataType.value;
-            dataType.value = ('0' + Number(getUint8([data[i++]])).toString(16)).substr(0,2) + dataType.value;
-            dataType.value = ('0' + Number(getUint8([data[i++]])).toString(16)).substr(0,2) + dataType.value;
-            
+                dataType.value = ('0' + Number(getUint8([data[i++]])).toString(16)).slice(-2);
+                dataType.value = ('0' + Number(getUint8([data[i++]])).toString(16)).slice(-2) + dataType.value;
+                dataType.value = ('0' + Number(getUint8([data[i++]])).toString(16)).slice(-2) + dataType.value;
+                dataType.value = ('0' + Number(getUint8([data[i++]])).toString(16)).slice(-2) + dataType.value;
             break;
             case 'BCD':
             dataType.value = getBCD([data[i++], data[i++], data[i++], data[i++]]);
