@@ -1,0 +1,680 @@
+<html>
+
+<head>
+    <title>EMU Professional II Lora-Payload Encoder</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <style>
+        #box_all {
+            margin: auto;
+            width: 60%;
+            display: none;
+            margin-left: auto;
+            margin-right: auto;
+
+            /*background-color: #CCCCCC;*/
+        }
+
+        #box_content {
+            background-color: #FFF;
+            margin: auto;
+            padding: 20px;
+            padding-top: 10px;
+
+        }
+
+        #main {
+            border: 1px solid #CCCCCC;
+            clear: both;
+            padding-top: 2em;
+            /* background-color: #83888c;*/
+
+            color: #666;
+
+        }
+
+        #footer {
+            font-size: 8pt;
+            padding-left: 20px;
+            padding-top: 8px;
+            padding-right: 20px;
+            padding-bottom: 20px;
+            height: 100px;
+
+
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-color: #FFF;
+
+        }
+
+        body {
+            font-family: 'Raleway';
+
+        }
+
+        .left {
+            float: left;
+        }
+
+        .right {
+            float: right;
+        }
+
+        .error {
+
+
+            border-color: red;
+        }
+
+        #lin {
+            font-size: 8pt;
+            text-align: right;
+        }
+
+        h1 {
+            text-align: left;
+            font-size: 18pt;
+            f font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        h2 {
+            text-align: left;
+            font-size: 14pt;
+            f font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+
+        #header {
+            position: relative;
+            width: 800px;
+            height: 3em;
+        }
+
+        #header ul#primary {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            bottom: -1px;
+            width: 45em;
+            cursor: pointer;
+
+        }
+
+        #header ul#primary li {
+            display: inline;
+            list-style: none;
+        }
+
+        #header ul#primary a,
+        #header ul#primary span,
+        #header ul#primary a.current {
+            width: 8em;
+            display: block;
+            float: left;
+            padding: 4px 0;
+            margin: 1px 2px 0 0;
+            text-align: center;
+            font-size: 85%;
+            text-decoration: none;
+            color: #FFFFFF;
+        }
+
+        #header ul#primary span,
+        #header ul#primary a.current,
+        #header ul#primary a.current:hover {
+            border: 1px solid #CCCCCC;
+            border-bottom: none;
+            background-color: #0069b4;
+
+            background-repeat: no-repeat;
+            padding-bottom: 6px;
+            margin-top: 0;
+        }
+
+        #header ul#primary a {
+            background-color: #b6b9be;
+
+            background-repeat: no-repeat;
+            border: 1px solid #AAA;
+            border-bottom: none;
+        }
+
+        #header ul#primary a:hover {
+            margin-top: 0;
+            border-color: #666;
+            background-color: #0069b4;
+
+            padding-bottom: 5px;
+        }
+
+        #header ul#secondary {
+            color: #cccccc;
+            position: absolute;
+            margin: 0;
+            padding: 0;
+            bottom: -1.4em;
+            left: 1px;
+            width: 50em;
+        }
+
+        #header ul#secondary li a,
+        #header ul#secondary li span {
+            width: auto;
+            display: block;
+            float: left;
+            padding: 0 10px;
+            margin: 0;
+            border: none;
+            border-right: 2px #AAA;
+            background: none;
+            font-size: 85%;
+            color: #FFFFFF;
+        }
+
+        #header ul#secondary li a {
+            color: #CCCCCC;
+            text-decoration: none;
+        }
+
+        #header ul#secondary li a:hover {
+            color: #FFFFFF;
+            background-color: #0069b4;
+
+            background-repeat: no-repeat;
+            padding: 0 10px;
+            border: none;
+            border-right: 1px dotted #AAA;
+        }
+
+        #header ul#secondary li a:active {
+            color: #000;
+            background-color: #0069b4;
+
+            background-repeat: no-repeat;
+        }
+
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 12px;
+            width: 750px;
+            text-align: left;
+            border-collapse: collapse;
+            background-color: #0069b4;
+
+            background-repeat: no-repeat;
+        }
+
+        th {
+            font-size: 13px;
+            font-weight: normal;
+            padding: 8px;
+            color: #FFF;
+            background-color: #0069b4;
+
+            background-repeat: no-repeat;
+            border-top-style: none;
+            border-bottom-style: none;
+            border-top-color: #aabcfe;
+            border-bottom-color: #fff;
+        }
+
+        td {
+            padding: 8px;
+            color: #333;
+            background-color: #b6b9be;
+
+            border-top-style: none;
+            border-bottom-style: none;
+            border-bottom-color: #fff;
+            background-size: 100% 100%;
+        }
+
+        td.title {
+            color: #fff;
+            font-weight: bold;
+            background-color: #676;
+        }
+
+        tr:hover td {
+            color: #FFF;
+            background-color: #83888c;
+
+            background-repeat: no-repeat;
+        }
+
+        form fieldset {
+            border-color: #000;
+            border-width: 1px;
+            border-style: solid;
+            padding: 10px;
+            margin: 0;
+        }
+
+        .metervalue {
+            float: left;
+            width: 120px;
+            text-align: right;
+        }
+
+        input,
+        textarea {
+            margin-bottom: 5px;
+            width: 185px;
+        }
+
+        input[type='checkbox'] {
+            width: 15px;
+        }
+
+        textarea {
+            width: 250px;
+            height: 150px;
+        }
+
+        .boxes {
+            background-image: none;
+            width: 1em;
+        }
+
+        .boxbottom {
+
+            float: left;
+            padding: 5px;
+
+        }
+
+        .boxbottom-left {
+
+            float: left;
+            padding: 5px;
+            width: 20em;
+        }
+
+        .boxergebnis {
+            display: inline-flex;
+            min-width: 50%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="right">
+        <img alt="EMULogo" width="150px" height="100px" src="https://www.emuag.ch/profII/EMU.svg" />
+    </div>
+    <h1>EMU Professional II Lora-Payload Encoder</h1>
+
+    <div class="boxergebnis">
+        <div><b> Payload base64-encoded:</b>
+            <div name="ergebnisbase64" id="ergebnisbase64"> no data selected </div>
+        </div>
+    </div>
+
+    <div class="boxergebnis">
+
+        <div><b> Payload hex-encoded:</b>
+            <div name="ergebnis" id="ergebnis"> no data selected </div>
+        </div>
+    </div>
+
+    <div class="boxergebnis">
+        <div><b> Payload hex-encoded without leading 0x:</b>
+            <div name="ergebnis" id="ergebnishex"> no data selected </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+    <form id="data" onsubmit="doWork(); return false;">
+
+        <input type="number" min="1" max="65535" oninput="validity.valid||(value='');"
+            onchange="doWork(); return false;" onsubmit="doWork(); return false;" name="fInterval" id="fInterval"
+            value="15" style="width: 5em;"> <label for="fInterval" />Interval in minutes (from 1 to 65535)<br />
+        <input type="checkbox" onchange="doWork();" name="fPortConfirmed" id="fPortConfirmed"> <label
+            for="fPortConfirmed" />Uplink should be confirmed<br />
+        <br>
+        <h2>Datalogger-Entries which should be send:</h2>
+        <br />
+    </form>
+</body>
+
+<script lang="javascript">
+    var dataTypes = [];
+    dataTypes[0x00] = { 'len': 4, 'description': 'data-logger-index', 'dataType': 'Uint32' };
+    dataTypes[0x01] = { 'len': 4, 'description': 'timestamp', 'dataType': 'Uint32', 'unit': 'seconds' };
+    dataTypes[0x02] = { 'len': 4, 'description': 'timestamp-previous', 'dataType': 'Uint32', 'unit': 'seconds' };
+    dataTypes[0x03] = { 'len': 4, 'description': 'Active Energy Import T1', 'dataType': 'Uint32', 'unit': 'Wh', 'cfgdescription': 3, "cfgunit": 1, 'cfgtariff': 1 };
+    dataTypes[0x04] = { 'len': 4, 'description': 'Active Energy Import T2', 'dataType': 'Uint32', 'unit': 'Wh', 'cfgdescription': 3, "cfgunit": 1, 'cfgtariff': 2 };
+    dataTypes[0x05] = { 'len': 4, 'description': 'Active Energy Export T1', 'dataType': 'Uint32', 'unit': 'Wh', 'cfgdescription': 5, "cfgunit": 1, 'cfgtariff': 1 };
+    dataTypes[0x06] = { 'len': 4, 'description': 'Active Energy Export T2', 'dataType': 'Uint32', 'unit': 'Wh', 'cfgdescription': 5, "cfgunit": 1, 'cfgtariff': 2 };
+    dataTypes[0x07] = { 'len': 4, 'description': 'Reactive Energy Import T1', 'dataType': 'Uint32', 'unit': 'varh', 'cfgdescription': 10, "cfgunit": 5, 'cfgtariff': 1 };
+    dataTypes[0x08] = { 'len': 4, 'description': 'Reactive Energy Import T2', 'dataType': 'Uint32', 'unit': 'varh', 'cfgdescription': 10, "cfgunit": 5, 'cfgtariff': 2 };
+    dataTypes[0x09] = { 'len': 4, 'description': 'Reactive Energy Export T1', 'dataType': 'Uint32', 'unit': 'varh', 'cfgdescription': 13, "cfgunit": 5, 'cfgtariff': 1 };
+    dataTypes[0x0A] = { 'len': 4, 'description': 'Reactive Energy Export T2', 'dataType': 'Uint32', 'unit': 'varh', 'cfgdescription': 13, "cfgunit": 5, 'cfgtariff': 2 };
+    dataTypes[0x0B] = { 'len': 4, 'description': 'Active Power L123', 'dataType': 'Int32', 'unit': 'W', 'cfgdescription': 25, "cfgunit": 13 };
+    dataTypes[0x0C] = { 'len': 4, 'description': 'Active Power L1', 'dataType': 'Int32', 'unit': 'W', 'cfgdescription': 25, "cfgunit": 13, 'cfgphase': 1 };
+    dataTypes[0x0D] = { 'len': 4, 'description': 'Active Power L2', 'dataType': 'Int32', 'unit': 'W', 'cfgdescription': 25, "cfgunit": 13, 'cfgphase': 2 };
+    dataTypes[0x0E] = { 'len': 4, 'description': 'Active Power L3', 'dataType': 'Int32', 'unit': 'W', 'cfgdescription': 25, "cfgunit": 13, 'cfgphase': 3 };
+    dataTypes[0x0F] = { 'len': 4, 'description': 'Current L123', 'dataType': 'Int32', 'unit': 'mA', 'cfgdescription': 31, "cfgunit": 28 };
+    dataTypes[0x10] = { 'len': 4, 'description': 'Current L1', 'dataType': 'Int32', 'unit': 'mA', 'cfgdescription': 31, "cfgunit": 28, 'cfgphase': 1 };
+    dataTypes[0x11] = { 'len': 4, 'description': 'Current L2', 'dataType': 'Int32', 'unit': 'mA', 'cfgdescription': 31, "cfgunit": 28, 'cfgphase': 2 };
+    dataTypes[0x12] = { 'len': 4, 'description': 'Current L3', 'dataType': 'Int32', 'unit': 'mA', 'cfgdescription': 31, "cfgunit": 28, 'cfgphase': 3 };
+    dataTypes[0x13] = { 'len': 4, 'description': 'Current N', 'dataType': 'Int32', 'unit': 'mA', 'cfgdescription': 31, "cfgunit": 28, 'cfgphase': 4 };
+    dataTypes[0x14] = { 'len': 4, 'description': 'Voltage L1-N', 'dataType': 'Int32', 'unit': 'V/10', 'unit_calculated': 'V', 'factor': 0.1, 'fixed': 1, 'cfgdescription': 30, "cfgunit": 26, 'cfgphase': 1 };
+    dataTypes[0x15] = { 'len': 4, 'description': 'Voltage L2-N', 'dataType': 'Int32', 'unit': 'V/10', 'unit_calculated': 'V', 'factor': 0.1, 'fixed': 1, 'cfgdescription': 30, "cfgunit": 26, 'cfgphase': 2 };
+    dataTypes[0x16] = { 'len': 4, 'description': 'Voltage L3-N', 'dataType': 'Int32', 'unit': 'V/10', 'unit_calculated': 'V', 'factor': 0.1, 'fixed': 1, 'cfgdescription': 30, "cfgunit": 26, 'cfgphase': 3 };
+    dataTypes[0x17] = { 'len': 1, 'description': 'Powerfactor L1', 'dataType': 'Int8', 'unit': 'Cos', 'factor': 0.01, 'fixed': 2, 'cfgdescription': 32, "cfgunit": 31, 'cfgphase': 1 };
+    dataTypes[0x18] = { 'len': 1, 'description': 'Powerfactor L2', 'dataType': 'Int8', 'unit': 'Cos', 'factor': 0.01, 'fixed': 2, 'cfgdescription': 32, "cfgunit": 31, 'cfgphase': 2 };
+    dataTypes[0x19] = { 'len': 1, 'description': 'Powerfactor L3', 'dataType': 'Int8', 'unit': 'Cos', 'factor': 0.01, 'fixed': 2, 'cfgdescription': 32, "cfgunit": 31, 'cfgphase': 3 };
+    dataTypes[0x1A] = { 'len': 2, 'description': 'Frequency', 'dataType': 'Int16', 'unit': 'Hz', 'factor': 0.1, 'fixed': 1, 'cfgdescription': 33, "cfgunit": 32 };
+    dataTypes[0x1B] = { 'len': 4, 'description': 'Active Power average', 'dataType': 'Int32', 'unit': 'W', "cfgunit": 13, };
+    dataTypes[0x1C] = { 'len': 4, 'description': 'Active Energy Import T1 kWh', 'dataType': 'Uint32', 'unit': 'kWh', 'cfgdescription': 3, "cfgunit": 2, 'cfgtariff': 1 };
+    dataTypes[0x1D] = { 'len': 4, 'description': 'Active Energy Import T2 kWh', 'dataType': 'Uint32', 'unit': 'kWh', 'cfgdescription': 3, "cfgunit": 2, 'cfgtariff': 2 };
+    dataTypes[0x1E] = { 'len': 4, 'description': 'Active Energy Export T1 kWh', 'dataType': 'Uint32', 'unit': 'kWh', 'cfgdescription': 5, "cfgunit": 2, 'cfgtariff': 1 };
+    dataTypes[0x1F] = { 'len': 4, 'description': 'Active Energy Export T2 kWh', 'dataType': 'Uint32', 'unit': 'kWh', 'cfgdescription': 5, "cfgunit": 2, 'cfgtariff': 2 };
+    dataTypes[0x20] = { 'len': 4, 'description': 'Reactive Energy Import T1 kvarh', 'dataType': 'Uint32', 'unit': 'kvarh', 'cfgdescription': 10, "cfgunit": 6, 'cfgtariff': 1 };
+    dataTypes[0x21] = { 'len': 4, 'description': 'Reactive Energy Import T2 kvarh', 'dataType': 'Uint32', 'unit': 'kvarh', 'cfgdescription': 10, "cfgunit": 6, 'cfgtariff': 2 };
+    dataTypes[0x22] = { 'len': 4, 'description': 'Reactive Energy Export T1 kvarh', 'dataType': 'Uint32', 'unit': 'kvarh', 'cfgdescription': 13, "cfgunit": 6, 'cfgtariff': 1 };
+    dataTypes[0x23] = { 'len': 4, 'description': 'Reactive Energy Export T2 kvarh', 'dataType': 'Uint32', 'unit': 'kvarh', 'cfgdescription': 13, "cfgunit": 6, 'cfgtariff': 2 };
+    dataTypes[0x24] = { 'len': 8, 'description': 'Active Energy Import T1 64bit', 'dataType': 'uInt64', 'unit': 'Wh', 'cfgdescription': 3, "cfgunit": 1, 'cfgtariff': 1 };
+    dataTypes[0x25] = { 'len': 8, 'description': 'Active Energy Import T2 64bit', 'dataType': 'uInt64', 'unit': 'Wh', 'cfgdescription': 3, "cfgunit": 1, 'cfgtariff': 2 };
+    dataTypes[0x26] = { 'len': 8, 'description': 'Active Energy Export T1 64bit', 'dataType': 'uInt64', 'unit': 'Wh', 'cfgdescription': 5, "cfgunit": 1, 'cfgtariff': 1 };
+    dataTypes[0x27] = { 'len': 8, 'description': 'Active Energy Export T2 64bit', 'dataType': 'uInt64', 'unit': 'Wh', 'cfgdescription': 5, "cfgunit": 1, 'cfgtariff': 2 };
+    dataTypes[0x28] = { 'len': 8, 'description': 'Reactive Energy Import T1 64bit', 'dataType': 'uInt64', 'unit': 'varh', 'cfgdescription': 10, "cfgunit": 5, 'cfgtariff': 1 };
+    dataTypes[0x29] = { 'len': 8, 'description': 'Reactive Energy Import T2 64bit', 'dataType': 'uInt64', 'unit': 'varh', 'cfgdescription': 10, "cfgunit": 5, 'cfgtariff': 2 };
+    dataTypes[0x2A] = { 'len': 8, 'description': 'Reactive Energy Export T1 64bit', 'dataType': 'uInt64', 'unit': 'varh', 'cfgdescription': 13, "cfgunit": 5, 'cfgtariff': 1 };
+    dataTypes[0x2B] = { 'len': 8, 'description': 'Reactive Energy Export T2 64bit', 'dataType': 'uInt64', 'unit': 'varh', 'cfgdescription': 13, "cfgunit": 5, 'cfgtariff': 2 };
+    dataTypes[0xF0] = { 'len': 1, 'description': 'errorcode', 'dataType': 'ErrorCode' };
+    dataTypes[0xF1] = { 'len': 4, 'description': 'serial-number', 'dataType': 'MeterSerial' };
+    dataTypes[0xF2] = { 'len': 4, 'description': 'factor-number', 'dataType': 'MeterSerial' };
+    dataTypes[0xF3] = { 'len': 2, 'description': 'current-transformer primary', 'dataType': 'Uint16', "cfgunit": 72, };
+    dataTypes[0xF4] = { 'len': 2, 'description': 'current-transformer secondary', 'dataType': 'Uint16', "cfgunit": 72, };
+    dataTypes[0xF5] = { 'len': 2, 'description': 'voltage-transformer primary', 'dataType': 'Uint16', "cfgunit": 72, };
+    dataTypes[0xF6] = { 'len': 2, 'description': 'voltage-transformer secondary', 'dataType': 'Uint16', "cfgunit": 72, };
+    dataTypes[0xF7] = { 'len': 1, 'description': 'meter-typ', 'dataType': 'Uint8' };
+    dataTypes[0xF8] = { 'len': 4, 'description': 'MID year', 'dataType': 'BCD', };
+    dataTypes[0xF9] = { 'len': 4, 'description': 'factory year', 'dataType': 'BCD', };
+    dataTypes[0xFA] = { 'len': 4, 'description': 'firmware version', 'dataType': 'ASCII' };
+    dataTypes[0xFB] = { 'len': 4, 'description': 'mid-Version', 'dataType': 'ASCII' };
+    dataTypes[0xFC] = { 'len': 4, 'description': 'manufacturer', 'dataType': 'ASCII' };
+    dataTypes[0xFD] = { 'len': 4, 'description': 'hw-index', 'dataType': 'ASCII' };
+    dataTypes[0xFE] = { 'len': 4, 'description': 'systemtime', 'dataType': 'Uint32' };
+
+
+    //generate html
+    for (x = 0; x < dataTypes.length; x++) {
+        var myObject = document.createElement("div");
+        var myLabel = document.createElement("label");
+        if (dataTypes[x]) {
+            myLabel.setAttribute("for", "f" + dataTypes[x]['description']);
+            myLabel.innerHTML = dataTypes[x]['description'];
+
+            var myInput = document.createElement("input");
+            myInput.setAttribute("type", "checkbox");
+            myInput.setAttribute("id", "f" + dataTypes[x]['description']);
+            myInput.setAttribute("name", "f" + dataTypes[x]['description']);
+            myInput.setAttribute("onClick", "doWork(); ");
+            myInput.value = x;
+            document.getElementById("data").appendChild(myInput);
+
+            document.getElementById("data").appendChild(myLabel);
+            document.getElementById("data").appendChild(document.createElement('br'));
+        }
+
+    }
+
+
+    function clearInput() {
+        const form = document.getElementById('data');
+        Array.from(form.elements).forEach(element => {
+            element.checked = false; element.disabled = false;
+        });
+        document.getElementById('ergebnis').innerHTML = "no data selected";
+        document.getElementById('ergebnisbase64').innerHTML = "no data selected";
+        document.getElementById('ergebnishex').innerHTML = "no data selected";
+    }
+    function doWork() {
+
+        var data = {
+            'fPort': 1,
+            'timeInterval': 15,
+            'sndAck': false,
+            'startReJoin': false,
+            'portIsActive': true,
+            'values': []
+        }
+        let iMax = 10;
+        var iCounter = 0;
+        const form = document.getElementById('data')
+        Array.from(form.elements).forEach(element => {
+            element.disabled = false;
+            if (element.checked && !element.disabled) {
+                if (element.id === "fPortConfirmed") {
+                    data.sndAck = true;
+
+                }
+                else {
+                    data.values.push(parseInt(element.value));
+                    iCounter = iCounter + 1;
+                }
+            }
+        }
+        );
+
+        if (iCounter >= iMax) {
+            Array.from(form.elements).forEach(element => {
+                if (!element.checked) { element.disabled = true; }
+            }
+            );
+
+        }
+        data.timeInterval = parseInt(document.getElementById('fInterval').value);
+
+        erg = Encode(1, data, {});
+
+
+        document.getElementById('ergebnis').innerHTML = toHexString(erg, true);
+        document.getElementById('ergebnishex').innerHTML = toHexString(erg, false);
+        document.getElementById('ergebnisbase64').innerHTML = base64EncArr(erg);
+        //document.getElementById('boxergebnis').style.display = "inline-flex";
+    }
+
+
+    function toDecArray(byteArray) {
+        return '' + Array.from(byteArray, function (byte) {
+            return (' ' + (byte & 0xFF).toString()).slice(-3).toUpperCase();
+        }).join(' ')
+    }
+
+
+    function toHexString(byteArray, withLeadingZero) {
+        var filler = withLeadingZero ? '0x' : '';
+        return filler + Array.from(byteArray, function (byte) {
+            return ('0' + (byte & 0xFF).toString(16)).slice(-2).toUpperCase();
+        }).join(' ' + filler)
+    }
+    /**
+     * Encode is called by Chirpstack
+     * @param {*} fPort 
+     * @param {*} data Object containing configuration
+     * @param {*} variables 
+     * @returns binary data
+     */
+    function Encode(fPort, data, variables) {
+        /**
+         * Example JSON-Object for Timestamp, Energy 0x03-0x0A 
+         * {
+         *   "fPort": 1,
+         *   "timeInterval": 15,
+         *   "sndAck": true,
+         *   "startReJoin": false,
+         *   "portIsActive": true,
+         *   "values": [
+         *       1,
+         *       3,
+         *       4,
+         *       5,
+         *       6,
+         *       7,
+         *       8,
+         *       9,
+         *       10
+         *   ]
+         * } 
+         * 
+         */
+        bytes = [];
+
+        //make sure the time is valid and between 1 and 65535!
+        data.timeInterval = Math.min(data.timeInterval, 0xFFFF);
+        data.timeInterval = Math.max(data.timeInterval, 1);
+
+        //push second byte to first position
+        bytes.push(data.timeInterval & 0X00FF);
+        //push first byte to second pposition
+        bytes.push(data.timeInterval >> 8);
+
+        var configFlags = 0x00;
+        //Send Acknowledge for each Uplink back
+        if (data.sndAck) {
+            configFlags |= 0x02;
+        }
+        //Start Re-Join
+        if (data.startReJoin) {
+            configFlags |= 0x04;
+        }
+        //Enable this port so it sends data
+        if (data.portIsActive) {
+            configFlags |= 0x08;
+        }
+
+        //Push the config flag on the stack
+        bytes.push(configFlags);
+        for (var i = 0; i < data.values.length; i++) {
+            bytes.push(data.values[i]);
+        }
+        //apply crc-8
+        crc8 = crc8_encode(bytes);
+        bytes.push(crc8);
+
+        return bytes;
+    }
+
+    function crc8_encode(data) {
+
+        var xorOut = 0x0000;
+        var table = [
+            0x00, 0x07, 0x0E, 0x09, 0x1C, 0x1B,
+            0x12, 0x15, 0x38, 0x3F, 0x36, 0x31,
+            0x24, 0x23, 0x2A, 0x2D, 0x70, 0x77,
+            0x7E, 0x79, 0x6C, 0x6B, 0x62, 0x65,
+            0x48, 0x4F, 0x46, 0x41, 0x54, 0x53,
+            0x5A, 0x5D, 0xE0, 0xE7, 0xEE, 0xE9,
+            0xFC, 0xFB, 0xF2, 0xF5, 0xD8, 0xDF,
+            0xD6, 0xD1, 0xC4, 0xC3, 0xCA, 0xCD,
+            0x90, 0x97, 0x9E, 0x99, 0x8C, 0x8B,
+            0x82, 0x85, 0xA8, 0xAF, 0xA6, 0xA1,
+            0xB4, 0xB3, 0xBA, 0xBD, 0xC7, 0xC0,
+            0xC9, 0xCE, 0xDB, 0xDC, 0xD5, 0xD2,
+            0xFF, 0xF8, 0xF1, 0xF6, 0xE3, 0xE4,
+            0xED, 0xEA, 0xB7, 0xB0, 0xB9, 0xBE,
+            0xAB, 0xAC, 0xA5, 0xA2, 0x8F, 0x88,
+            0x81, 0x86, 0x93, 0x94, 0x9D, 0x9A,
+            0x27, 0x20, 0x29, 0x2E, 0x3B, 0x3C,
+            0x35, 0x32, 0x1F, 0x18, 0x11, 0x16,
+            0x03, 0x04, 0x0D, 0x0A, 0x57, 0x50,
+            0x59, 0x5E, 0x4B, 0x4C, 0x45, 0x42,
+            0x6F, 0x68, 0x61, 0x66, 0x73, 0x74,
+            0x7D, 0x7A, 0x89, 0x8E, 0x87, 0x80,
+            0x95, 0x92, 0x9B, 0x9C, 0xB1, 0xB6,
+            0xBF, 0xB8, 0xAD, 0xAA, 0xA3, 0xA4,
+            0xF9, 0xFE, 0xF7, 0xF0, 0xE5, 0xE2,
+            0xEB, 0xEC, 0xC1, 0xC6, 0xCF, 0xC8,
+            0xDD, 0xDA, 0xD3, 0xD4, 0x69, 0x6E,
+            0x67, 0x60, 0x75, 0x72, 0x7B, 0x7C,
+            0x51, 0x56, 0x5F, 0x58, 0x4D, 0x4A,
+            0x43, 0x44, 0x19, 0x1E, 0x17, 0x10,
+            0x05, 0x02, 0x0B, 0x0C, 0x21, 0x26,
+            0x2F, 0x28, 0x3D, 0x3A, 0x33, 0x34,
+            0x4E, 0x49, 0x40, 0x47, 0x52, 0x55,
+            0x5C, 0x5B, 0x76, 0x71, 0x78, 0x7F,
+            0x6A, 0x6D, 0x64, 0x63, 0x3E, 0x39,
+            0x30, 0x37, 0x22, 0x25, 0x2C, 0x2B,
+            0x06, 0x01, 0x08, 0x0F, 0x1A, 0x1D,
+            0x14, 0x13, 0xAE, 0xA9, 0xA0, 0xA7,
+            0xB2, 0xB5, 0xBC, 0xBB, 0x96, 0x91,
+            0x98, 0x9F, 0x8A, 0x8D, 0x84, 0x83,
+            0xDE, 0xD9, 0xD0, 0xD7, 0xC2, 0xC5,
+            0xCC, 0xCB, 0xE6, 0xE1, 0xE8, 0xEF,
+            0xFA, 0xFD, 0xF4, 0xF3
+        ];
+        var crc = 0x0000;
+        for (var j = 0; j < data.length; j++) {
+            crc = table[crc ^ data[j]];
+        }
+        return (crc ^ xorOut) & 0xFFFF;
+
+    }
+    function b64ToUint6(nChr) {
+        return nChr > 64 && nChr < 91
+            ? nChr - 65
+            : nChr > 96 && nChr < 123
+                ? nChr - 71
+                : nChr > 47 && nChr < 58
+                    ? nChr + 4
+                    : nChr === 43
+                        ? 62
+                        : nChr === 47
+                            ? 63
+                            : 0;
+    }
+    /* Base64 string to array encoding */
+    function uint6ToB64(nUint6) {
+        return nUint6 < 26
+            ? nUint6 + 65
+            : nUint6 < 52
+                ? nUint6 + 71
+                : nUint6 < 62
+                    ? nUint6 - 4
+                    : nUint6 === 62
+                        ? 43
+                        : nUint6 === 63
+                            ? 47
+                            : 65;
+    }
+
+    function base64EncArr(aBytes) {
+        let nMod3 = 2;
+        let sB64Enc = "";
+
+        const nLen = aBytes.length;
+        let nUint24 = 0;
+        for (let nIdx = 0; nIdx < nLen; nIdx++) {
+            nMod3 = nIdx % 3;
+            if (nIdx > 0 && ((nIdx * 4) / 3) % 76 === 0) {
+                sB64Enc += "\r\n";
+            }
+
+            nUint24 |= aBytes[nIdx] << ((16 >>> nMod3) & 24);
+            if (nMod3 === 2 || aBytes.length - nIdx === 1) {
+                sB64Enc += String.fromCodePoint(
+                    uint6ToB64((nUint24 >>> 18) & 63),
+                    uint6ToB64((nUint24 >>> 12) & 63),
+                    uint6ToB64((nUint24 >>> 6) & 63),
+                    uint6ToB64(nUint24 & 63)
+                );
+                nUint24 = 0;
+            }
+        }
+        return (
+            sB64Enc.substr(0, sB64Enc.length - 2 + nMod3) +
+            (nMod3 === 2 ? "" : nMod3 === 1 ? "=" : "==")
+        );
+    }
+</script>
+
+</html>
