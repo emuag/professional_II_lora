@@ -467,7 +467,9 @@
 
         if (iCounter >= iMax) {
             Array.from(form.elements).forEach(element => {
+                if((element.id !== 'fInterval') && (element.id !== 'fPortConfirmed')){
                 if (!element.checked) { element.disabled = true; }
+                }
             }
             );
 
