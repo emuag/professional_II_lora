@@ -75,7 +75,10 @@ function decodeUplink(input) {
     data = input.bytes;
     //uplink with only 2 bytes is only status update, ignore it 
     if(data.length<=2){
-        return {};
+        return {
+            data: {
+            }
+        };
     }
     
     var obj = {};
@@ -204,7 +207,10 @@ function decodeUplink(input) {
 function Decode(fPort, data, variables) {
     //uplink with only 2 bytes is only status update, ignore it 
     if (data.length <= 2) {
-        return {};
+        return {
+            data: {
+            }
+        };
     }
     
     var obj = {};
