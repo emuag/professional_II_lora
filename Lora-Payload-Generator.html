@@ -3,7 +3,7 @@
 <head>
     <title>EMU Professional II Lora-Payload Encoder</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    
+
     <style>
         #box_all {
             margin: auto;
@@ -334,8 +334,12 @@
         <input type="number" min="1" max="65535" oninput="validity.valid||(value='');"
             onchange="doWork(); return false;" onsubmit="doWork(); return false;" name="fInterval" id="fInterval"
             value="15" style="width: 5em;"> <label for="fInterval" />Interval in minutes (from 1 to 65535)<br />
+        <input type="checkbox" checked onchange="doWork();" name="fPortActive" id="fPortActive"> <label
+            for="fPortActive" />fPort should be activated<br />
         <input type="checkbox" onchange="doWork();" name="fPortConfirmed" id="fPortConfirmed"> <label
             for="fPortConfirmed" />Uplink should be confirmed<br />
+        <input type="checkbox" onchange="doWork();" name="fStartRejoin" id="fStartRejoin"> <label
+            for="fStartRejon" />Device will perform a rejoin<br />
         <br>
         <h2>Datalogger-Entries which should be send:</h2>
         <br />
@@ -444,7 +448,7 @@
             'timeInterval': 15,
             'sndAck': false,
             'startReJoin': false,
-            'portIsActive': true,
+            'portIsActive': false,
             'values': []
         }
         let iMax = 10;
@@ -455,11 +459,20 @@
             if (element.checked && !element.disabled) {
                 if (element.id === "fPortConfirmed") {
                     data.sndAck = true;
-
                 }
                 else {
-                    data.values.push(parseInt(element.value));
-                    iCounter = iCounter + 1;
+                    if (element.id === "fStartRejoin") {
+                        data.startReJoin = true;
+                    }
+                    else {
+                        if (element.id === "fPortActive") {
+                            data.portIsActive = true;
+                        }
+                        else {
+                            data.values.push(parseInt(element.value));
+                            iCounter = iCounter + 1;
+                        }
+                    }
                 }
             }
         }
@@ -467,8 +480,8 @@
 
         if (iCounter >= iMax) {
             Array.from(form.elements).forEach(element => {
-                if((element.id !== 'fInterval') && (element.id !== 'fPortConfirmed')){
-                if (!element.checked) { element.disabled = true; }
+                if ((element.id !== 'fInterval') && (element.id !== 'fPortConfirmed') && (element.id !== 'fStartRejoin') && (element.id !== 'fPortActive')) {
+                    if (!element.checked) { element.disabled = true; }
                 }
             }
             );
