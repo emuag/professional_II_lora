@@ -21,6 +21,12 @@
 * SOFTWARE.
 */
 
+// 2026-06-17
+// ChirpStack version 4.17.0 introduced a breaking change as a side effect:
+// https://www.chirpstack.io/docs/chirpstack/changelog.html#v4170
+//   "As a side-effect of this fix, strict mode is now enforced by the JS runtime!"
+// Strict mode rejects implicit globals, so this was fixed by adding the
+// missing "var" to all variable assignments.
 /**
  * decodeUplink is called by TheThingsNetwork
  * we use our parsePayload() for decoding
@@ -72,7 +78,7 @@
  *      }
  */
 function decodeUplink(input) {
-    data = input.bytes;
+    var data = input.bytes;
     //uplink with only 2 bytes is only status update, ignore it 
     if(data.length<=2){
         return {
@@ -85,8 +91,8 @@ function decodeUplink(input) {
     
     
     //check CRC-8 which resides at the end
-    crc8Received = data[data.length - 1];
-    dataToCheck = [];
+    var crc8Received = data[data.length - 1];
+    var dataToCheck = [];
     for(var i = 0; i < data.length - 1; i++){
         dataToCheck.push(data[i]);
     }
@@ -216,8 +222,8 @@ function Decode(fPort, data, variables) {
     var obj = {};
     
     //check CRC-8 which resides at the end
-    crc8Received = data[data.length - 1];
-    dataToCheck = [];
+    var crc8Received = data[data.length - 1];
+    var dataToCheck = [];
     for(var i = 0; i < data.length - 1; i++){
         dataToCheck.push(data[i]);
     }
@@ -289,8 +295,8 @@ function encodeDownlink(data){
     if (data.data.fPort === null || data.data.fPort === undefined){
         data.data.fPort = 1;
     }
-    fPort = data.data.fPort;
-    bytes = [];
+    var fPort = data.data.fPort;
+    var bytes = [];
 
     //just call the Encode function 
     bytes = Encode(fPort, data.data, {});
@@ -310,7 +316,7 @@ function decodeDownlink(input){
     if(input.bytes.length > 3){ 
         var i = 0;
         data.timeInterval = Number(getInt16([input.bytes[i++], input.bytes[i++]]));
-        configFlag = input.bytes[i++];
+        var configFlag = input.bytes[i++];
         //sndAck activated ?
         if (configFlag & 0x02) {
             data.sndAck = true;
@@ -370,7 +376,7 @@ function Encode(fPort, data, variables) {
  * } 
  * 
  */    
-    bytes = [];
+    var bytes = [];
     
     //make sure the time is valid and between 1 and 65535!
     data.timeInterval = Math.min(data.timeInterval, 0xFFFF);
@@ -401,7 +407,7 @@ function Encode(fPort, data, variables) {
         bytes.push(data.values[i]);
     }
     //apply crc-8
-    crc8 = crc8_encode(bytes);
+    var crc8 = crc8_encode(bytes);
     bytes.push(crc8);
     
     return bytes;
@@ -457,7 +463,7 @@ function getInt8(data) {
 */
 function getInt16(data) {
     
-    value = (data[1] << 8 | data[0]);
+    var value = (data[1] << 8 | data[0]);
     return value;
     
 }
@@ -467,7 +473,7 @@ function getInt16(data) {
 * @returns 
 */
 function getUint16(data) {
-    value = (data[1] << 8 | data[0]) >>> 0;
+    var value = (data[1] << 8 | data[0]) >>> 0;
     return value;
     
     
@@ -478,7 +484,7 @@ function getUint16(data) {
 * @returns 
 */
 function getInt32(data) {
-    value = (data[3] << 24 | data[2] << 16 | data[1] << 8 | data[0]);
+    var value = (data[3] << 24 | data[2] << 16 | data[1] << 8 | data[0]);
     return value;
     
     
@@ -491,7 +497,7 @@ function getInt32(data) {
 */
 function getUint32(data) {
     
-    value = (data[3] << 24 | data[2] << 16 | data[1] << 8 | data[0]) >>> 0;
+    var value = (data[3] << 24 | data[2] << 16 | data[1] << 8 | data[0]) >>> 0;
     return value;
 }
 
@@ -520,7 +526,7 @@ function getUint64(data) {
     //so this won't work 
     //if Chirpstack will use another javascript engine we could use typearray's
     
-    value = Number((data[7] << 56 | data[6] << 48 | data[5] << 40 | data[4] << 32 | data[3] << 24 | data[2] << 16 | data[1] << 8 | data[0]) >>> 0);
+    var value = Number((data[7] << 56 | data[6] << 48 | data[5] << 40 | data[4] << 32 | data[3] << 24 | data[2] << 16 | data[1] << 8 | data[0]) >>> 0);
     return value;
     
 }
@@ -540,7 +546,7 @@ function getASCII(data) {
     var ascii = "";
     
     for(var i=0; i< data.length; i++) {
-        entry = getUint8(data[i]);
+        var entry = getUint8(data[i]);
         if (entry != 0x00) {
             ascii = ascii + String.fromCharCode(entry.toString());
         }
@@ -632,8 +638,8 @@ function parsePayload(data){
     //the last byte is the crc-code so ignore this one
     while (i < (data.length - 1)) {
         //extract signature byte 
-        indexOfDataType = data[i];
-        dataType = dataTypes[indexOfDataType];
+        var indexOfDataType = data[i];
+        var dataType = dataTypes[indexOfDataType];
         i++;
         //also save the sort-order value  
         dataType.order = indexOfDataType;
